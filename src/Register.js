@@ -13,8 +13,8 @@ const Register = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  const stockUserInfo = () => {
-    addDoc(collection(db, "users"), {
+  const stockUserInfo = (user) => {
+    addDoc(collection(db, "users").doc(user.uid), {
       // doc(userId)でドキュメントIDを指定することができる
       username: registerName, // フィールドにはusernameだけを指定する
       balance: 500,
