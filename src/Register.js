@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./FirebaseConfig.js";
 import { Navigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import db from "./FirebaseConfig";
 
 const Register = () => {
@@ -13,19 +13,26 @@ const Register = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  const stockUserInfo = (userId) => {
-    addDoc(collection(db, "users").doc(userId), {
-      // doc(userId)でドキュメントIDを指定することができる
-      username: registerName, // フィールドにはusernameだけを指定する
-      balance: 500,
-    });
-  };
+  // const stockUserInfo = (userId) => {
+  //   addDoc(collection(db, "users").doc(userId), {
+  //     // doc(userId)でドキュメントIDを指定することができる
+  //     username: registerName, // フィールドにはusernameだけを指定する
+  //     balance: 500,
+  //   });
+  // };
   // const stockUserInfo = (userId) => {
   //   db.collection("users").doc(userId).set({
   //     username: registerName,
   //     balance: 500,
   //   });
   // };
+
+  const stockUserInfo = (userId) => {
+    setDoc(doc(db, "users", userId), {
+      username: registerName,
+      balance: 500,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +45,7 @@ const Register = () => {
       );
       const userId = userCredential.user.uid;
       stockUserInfo(userId);
-      console.log(stockUserInfo(user.uid));
+      console.log(stockUserInfo(userId));
     } catch (error) {
       console.log(error);
       alert("正しく入力してください");
@@ -96,5 +103,4 @@ const Register = () => {
     </>
   );
 };
-
 export default Register;
