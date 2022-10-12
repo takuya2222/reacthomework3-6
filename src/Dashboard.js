@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./FirebaseConfig.js";
 import db from "./FirebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
-// import { async } from "@firebase/util";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
@@ -14,20 +14,30 @@ const Dashboard = () => {
     (async () => {
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      console.log(user.uid);
-      console.log(docSnap.data());
       setUserName(docSnap.data().username);
       setBalance(docSnap.data().balance);
     })();
+    // ここuserの意味をしっかり理解する
   }, [user]);
+
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login/");
+  };
 
   /* ↓state変数「user」を上で定義 */
   /* ↓ログインしているかどうかを判定する */
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (!currentUser) {
+        navigate("/login");
+      } else {
+        setUser(currentUser);
+      }
     });
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -35,7 +45,9 @@ const Dashboard = () => {
       {userName}さんようこそ！ 残高:{balance}
       <h1>マイページ</h1>
       <p>{user && user.email}</p>
-      <button>ログアウト</button>
+      <h1>ユーザ一覧</h1>
+      <p>ユーザ名</p>
+      <button onClick={logout}>ログアウト</button>
     </>
   );
 };

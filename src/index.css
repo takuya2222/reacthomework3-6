@@ -21,7 +21,7 @@ body {
 }
 
 .container p {
-  justify-self: center;
+  justify-self: left;
 }
 
 form {
