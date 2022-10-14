@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const logout = async () => {
     await signOut(auth);
-    navigate("/login/");
+    navigate("/login");
   };
 
   /* ↓state変数「user」を上で定義 */

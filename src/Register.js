@@ -5,14 +5,13 @@ import {
 } from "firebase/auth";
 import { auth } from "./FirebaseConfig.js";
 import { Navigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import db from "./FirebaseConfig";
 
 const Register = () => {
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-
 
   const stockUserInfo = (userId) => {
     setDoc(doc(db, "users", userId), {
