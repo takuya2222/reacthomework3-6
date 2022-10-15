@@ -22,6 +22,11 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
+
   /* ↓state変数「user」を上で定義 */
   /* ↓ログインしているかどうかを判定する */
   useEffect(() => {
@@ -42,6 +47,7 @@ const Dashboard = () => {
       <p>{user && user.email}</p>
       <h1>ユーザ一覧</h1>
       <p>ユーザ名</p>
+      <button onClick={logout}>ログアウト</button>
     </>
   );
 };
