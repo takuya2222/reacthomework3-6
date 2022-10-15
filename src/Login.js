@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig.js";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+    } catch (error) {
+      alert("メールアドレスまたはパスワードが間違っています");
+    }
+  };
 
   const [user, setUser] = useState();
 
@@ -22,7 +32,7 @@ const Login = () => {
       ) : (
         <>
           <h1>ログインページ</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div>
               <label>メールアドレス</label>
               <input
