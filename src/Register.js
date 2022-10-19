@@ -33,7 +33,6 @@ const Register = () => {
       stockUserInfo(userId);
       console.log(stockUserInfo(userId));
     } catch (error) {
-      console.log(error);
       alert("正しく入力してください");
     }
   };
