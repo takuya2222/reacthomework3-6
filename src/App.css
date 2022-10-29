@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.moneyList {
+  list-style: none;
+}
+
+.moneyOption {
+  display: flex;
+  justify-content: space-between;
+}
+
+.moneyButton {
+  display: flex;
+}
+
+.moneyWallet {
+  margin-right: 20px;
+}

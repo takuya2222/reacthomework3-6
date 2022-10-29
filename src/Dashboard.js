@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import "../src/App.css";
 import { auth } from "./FirebaseConfig.js";
 import db from "./FirebaseConfig";
 import {
@@ -19,14 +20,15 @@ const Dashboard = () => {
   const [otherUsers, setOtherUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  // 下のユーザー一覧を表示
   useEffect(() => {
     const others = collection(db, "users");
     getDocs(others).then((QuerySnapshot) => {
-      console.log(QuerySnapshot.docs.map((doc) => doc.data()));
       setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
     });
   }, []);
 
+  // 上の名前と残高を表記
   useEffect(() => {
     (async () => {
       const docRef = doc(db, "users", user.uid);
@@ -69,15 +71,30 @@ const Dashboard = () => {
       <h1>ユーザ一覧</h1>
       <p>ユーザ名</p>
       {otherUsers.map((user) => (
-        <li>
-          {user.username}
-          <button onClick={ShowModal}>walletを見る</button>
-          <button>送る</button>
-          <button>{user.balance}</button>
+        <li key={user} className="moneyList">
+          <div className="moneyOption">
+            <div>{user.username}</div>
+            <div className="moneyButton">
+              <div className="moneyWallet">
+                <button onClick={ShowModal}>walletを見る</button>
+              </div>
+              <div className="moneyWallet">
+                <button>送る</button>
+              </div>
+              <div>
+                <button>{user.balance}</button>
+              </div>
+            </div>
+          </div>
         </li>
       ))}
       <button onClick={logout}>ログアウト</button>
-      <Modal showFlag={showModal} setShowModal={setShowModal} />
+      <Modal
+        showFlag={showModal}
+        setShowModal={setShowModal}
+        username={user}
+        setOtherUsers={setOtherUsers}
+      />
     </>
   );
 };
