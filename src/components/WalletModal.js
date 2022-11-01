@@ -1,21 +1,16 @@
-import { collection, getDocs, QuerySnapshot } from "firebase/firestore";
-import React, { useEffect } from "react";
-import db from "../FirebaseConfig";
-
 const Modal = (props) => {
-  const { setShowModal, content, setOtherUsers, showFlag } = props;
+  const { setShowModal, setOtherUser, otherUser, showFlag, user } = props;
+
+  // setOtherUser(user);
 
   const closeModal = () => {
     setShowModal(false);
+    setOtherUser(user);
+    console.log(setOtherUser);
   };
 
-  useEffect(() => {
-    const others = collection(db, "users");
-    getDocs(others).then((QuerySnapshot) => {
-      setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
-      console.log(QuerySnapshot.docs.map((doc) => doc.data().balance));
-    });
-  }, []);
+  console.log(user);
+  console.log(otherUser);
 
   const modalContent = {
     background: "white",
@@ -40,8 +35,8 @@ const Modal = (props) => {
       {showFlag ? ( // showFlagがtrueだったらModalを表示する
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
-            <p>{}さんの残高:</p>
-            <p>{content}</p>
+            <p>{otherUser}さんの残高:</p>
+            <p>{otherUser}</p>
             <button onClick={closeModal}>Close</button>
           </div>
         </div>

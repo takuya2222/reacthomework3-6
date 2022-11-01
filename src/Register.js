@@ -13,7 +13,6 @@ const Register = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  // firestoreに登録するために必要な記述、さらに
   const stockUserInfo = (userId) => {
     setDoc(doc(db, "users", userId), {
       username: registerName,
@@ -31,6 +30,7 @@ const Register = () => {
         registerPassword
       );
       const userId = userCredential.user.uid;
+      // firestoreに登録するために必要な記述
       stockUserInfo(userId);
     } catch (error) {
       alert("正しく入力してください");

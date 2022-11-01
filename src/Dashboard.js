@@ -8,7 +8,7 @@ import {
   doc,
   collection,
   getDocs,
-  QuerySnapshot,
+  // QuerySnapshot,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [user, setUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [otherUser, setOtherUser] = useState(null);
 
   // 下のユーザー一覧を表示
   useEffect(() => {
@@ -76,7 +77,16 @@ const Dashboard = () => {
             <div>{user.username}</div>
             <div className="moneyButton">
               <div className="moneyWallet">
-                <button onClick={ShowModal}>walletを見る</button>
+                <button
+                  onClick={() => {
+                    ShowModal();
+                    setOtherUser(user);
+                    console.log(user);
+                    console.log(setOtherUser);
+                  }}
+                >
+                  walletを見る
+                </button>
               </div>
               <div className="moneyWallet">
                 <button>送る</button>
@@ -92,7 +102,8 @@ const Dashboard = () => {
       <Modal
         showFlag={showModal}
         setShowModal={setShowModal}
-        username={user}
+        user={user}
+        otherUser={otherUser}
         setOtherUsers={setOtherUsers}
       />
     </>
