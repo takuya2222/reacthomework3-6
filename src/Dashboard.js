@@ -91,9 +91,6 @@ const Dashboard = () => {
               <div className="moneyWallet">
                 <button>送る</button>
               </div>
-              <div>
-                <button>{user.balance}</button>
-              </div>
             </div>
           </div>
         </li>
