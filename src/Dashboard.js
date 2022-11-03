@@ -81,8 +81,6 @@ const Dashboard = () => {
                   onClick={() => {
                     ShowModal();
                     setOtherUser(user);
-                    console.log(user);
-                    console.log(setOtherUser);
                   }}
                 >
                   walletを見る
