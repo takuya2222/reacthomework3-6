@@ -1,8 +1,9 @@
 const Modal = (props) => {
-  const { setShowModal, setOtherUser, otherUser, showFlag, user } = props;
+  const { setCanShowModal, setOtherUser, otherUser, canShowModal, user } =
+    props;
 
   const closeModal = () => {
-    setShowModal(false);
+    setCanShowModal(false);
     setOtherUser(user);
   };
 
@@ -26,7 +27,7 @@ const Modal = (props) => {
 
   return (
     <>
-      {showFlag ? ( // showFlagがtrueだったらModalを表示する
+      {canShowModal ?? ( // showFlagがtrueだったらModalを表示する
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
             <p>{otherUser.username}さんの残高:</p>
@@ -34,8 +35,6 @@ const Modal = (props) => {
             <button onClick={closeModal}>Close</button>
           </div>
         </div>
-      ) : (
-        <></> // showFlagがfalseの場合はModalは表示しない
       )}
     </>
   );

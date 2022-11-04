@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [balance, setBalance] = useState("");
   const [user, setUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [canShowModal, setCanShowModal] = useState(false);
   const [otherUser, setOtherUser] = useState(null);
 
   // 下のユーザー一覧を表示
@@ -60,7 +60,7 @@ const Dashboard = () => {
   }, [user]);
 
   const ShowModal = () => {
-    setShowModal(true);
+    setCanShowModal(true);
   };
 
   return (
@@ -95,8 +95,8 @@ const Dashboard = () => {
       ))}
       <button onClick={logout}>ログアウト</button>
       <Modal
-        showFlag={showModal}
-        setShowModal={setShowModal}
+        canShowModal={canShowModal}
+        setCanShowModal={setCanShowModal}
         user={user}
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}
