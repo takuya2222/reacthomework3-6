@@ -27,7 +27,7 @@ const Modal = (props) => {
 
   return (
     <>
-      {canShowModal && ( // showFlagがtrueだったらModalを表示する
+      {canShowModal && ( 
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
             <p>{otherUser.username}さんの残高:</p>
