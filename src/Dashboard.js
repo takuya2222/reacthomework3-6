@@ -8,7 +8,6 @@ import {
   doc,
   collection,
   getDocs,
-  // QuerySnapshot,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
