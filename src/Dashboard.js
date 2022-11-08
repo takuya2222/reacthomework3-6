@@ -3,12 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import "../src/App.css";
 import { auth } from "./FirebaseConfig.js";
 import db from "./FirebaseConfig";
-import {
-  getDoc,
-  doc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { getDoc, doc, collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
 
@@ -17,7 +12,7 @@ const Dashboard = () => {
   const [balance, setBalance] = useState("");
   const [user, setUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
-  const [canShowModal, setCanShowModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [otherUser, setOtherUser] = useState(null);
 
   // 下のユーザー一覧を表示
@@ -58,10 +53,6 @@ const Dashboard = () => {
     });
   }, [user]);
 
-  const ShowModal = () => {
-    setCanShowModal(true);
-  };
-
   return (
     <>
       {/* ↓ユーザーのメールアドレスを表示（ログインしている場合） */}
@@ -78,7 +69,7 @@ const Dashboard = () => {
               <div className="moneyWallet">
                 <button
                   onClick={() => {
-                    ShowModal();
+                    setIsOpen(true);
                     setOtherUser(user);
                   }}
                 >
@@ -94,8 +85,8 @@ const Dashboard = () => {
       ))}
       <button onClick={logout}>ログアウト</button>
       <Modal
-        canShowModal={canShowModal}
-        setCanShowModal={setCanShowModal}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         user={user}
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}

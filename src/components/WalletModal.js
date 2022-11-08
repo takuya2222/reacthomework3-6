@@ -1,9 +1,8 @@
 const Modal = (props) => {
-  const { setCanShowModal, setOtherUser, otherUser, canShowModal, user } =
-    props;
+  const { setIsOpen, setOtherUser, otherUser, isOpen, user } = props;
 
   const closeModal = () => {
-    setCanShowModal(false);
+    setIsOpen(false);
     setOtherUser(user);
   };
 
@@ -27,7 +26,7 @@ const Modal = (props) => {
 
   return (
     <>
-      {canShowModal && ( 
+      {isOpen && (
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
             <p>{otherUser.username}さんの残高:</p>
