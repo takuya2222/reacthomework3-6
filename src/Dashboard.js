@@ -6,6 +6,7 @@ import db from "./FirebaseConfig";
 import { getDoc, doc, collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
+import TransferModal from "./components/TransferModal.js";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
@@ -13,7 +14,9 @@ const Dashboard = () => {
   const [user, setUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [otherUser, setOtherUser] = useState(null);
+  // const [currentBalance, setCurrentBalance] = useState("");
 
   // 下のユーザー一覧を表示
   useEffect(() => {
@@ -77,7 +80,14 @@ const Dashboard = () => {
                 </button>
               </div>
               <div className="moneyWallet">
-                <button>送る</button>
+                <button
+                  onClick={() => {
+                    setIsTransferMoneyOpen(true);
+                    setBalance(docSnap.data().balance);
+                  }}
+                >
+                  送る
+                </button>
               </div>
             </div>
           </div>
@@ -87,6 +97,13 @@ const Dashboard = () => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        user={user}
+        otherUser={otherUser}
+        setOtherUsers={setOtherUsers}
+      />
+      <TransferModal
+        isTransferMoneyOpen={isTransferMoneyOpen}
+        setIsTransferMoneyOpen={setIsTransferMoneyOpen}
         user={user}
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}

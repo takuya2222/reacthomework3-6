@@ -1,9 +1,14 @@
-const Modal = (props) => {
-  const { setCanShowModal, setOtherUser, otherUser, canShowModal, user } =
-    props;
+const TransferModal = (props) => {
+  const {
+    setIsTransferMoneyOpen,
+    setOtherUser,
+    otherUser,
+    isTransferMoneyOpen,
+    user,
+  } = props;
 
   const closeModal = () => {
-    setCanShowModal(false);
+    setIsTransferMoneyOpen(false);
     setOtherUser(user);
   };
 
@@ -27,12 +32,13 @@ const Modal = (props) => {
 
   return (
     <>
-      {canShowModal && (
+      {isTransferMoneyOpen && (
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
-            <p>{otherUser.username}さんの残高:</p>
-            <p>{otherUser.balance}</p>
-            <button onClick={closeModal}>Close</button>
+            <p>あなたの残高:{otherUser.balance}</p>
+            <p>送る金額</p>
+            <input />
+            <button onClick={closeModal}>送信</button>
           </div>
         </div>
       )}
@@ -40,4 +46,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default TransferModal;
