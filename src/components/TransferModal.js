@@ -5,11 +5,14 @@ const TransferModal = (props) => {
     otherUser,
     isTransferMoneyOpen,
     user,
+    setBalance,
+    balance,
   } = props;
 
-  const closeModal = () => {
+  const transferButton = () => {
     setIsTransferMoneyOpen(false);
     setOtherUser(user);
+    setBalance(docSnap.data().balance);
   };
 
   const modalContent = {
@@ -30,15 +33,19 @@ const TransferModal = (props) => {
     justifyContent: "center",
   };
 
+  // setBalance(docSnap.data().balance);
+  console.log(setBalance(docSnap.data().balance))
+  console.log("aaa")
+
   return (
     <>
       {isTransferMoneyOpen && (
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
-            <p>あなたの残高:{otherUser.balance}</p>
+            <p>あなたの残高:{balance}</p>
             <p>送る金額</p>
             <input />
-            <button onClick={closeModal}>送信</button>
+            <button onClick={transferButton}>送信</button>
           </div>
         </div>
       )}

@@ -83,7 +83,6 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
-                    setBalance(docSnap.data().balance);
                   }}
                 >
                   送る
@@ -107,6 +106,7 @@ const Dashboard = () => {
         user={user}
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}
+        setBalance={setBalance}
       />
     </>
   );
