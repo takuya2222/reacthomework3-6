@@ -1,9 +1,8 @@
 const Modal = (props) => {
-  const { setIsOpen, setOtherUser, otherUser, isOpen, user } = props;
+  const { setIsOpen, otherUser, isOpen, user } = props;
 
   const closeModal = () => {
     setIsOpen(false);
-    setOtherUser(user);
   };
 
   const modalContent = {

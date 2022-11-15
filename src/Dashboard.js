@@ -56,6 +56,8 @@ const Dashboard = () => {
     });
   }, [user]);
 
+  console.log();
+
   return (
     <>
       {/* ↓ユーザーのメールアドレスを表示（ログインしている場合） */}
@@ -73,7 +75,10 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsOpen(true);
+                    // OtherUsersに格納されたデータにおいてマップ関数の中の仮引数userには0から順番に全ての値が入る.
+                    // setOtherUsersで
                     setOtherUser(user);
+                    console.log(user);
                   }}
                 >
                   walletを見る
@@ -107,7 +112,6 @@ const Dashboard = () => {
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}
         setBalance={setBalance}
-        docSnap={docSnap}
       />
     </>
   );
