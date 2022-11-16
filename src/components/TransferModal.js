@@ -28,14 +28,14 @@ const TransferModal = (props) => {
     justifyContent: "center",
   };
 
-  console.log(otherUser);
+  console.log(user);
 
   return (
     <>
       {isTransferMoneyOpen && (
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
-            <p>あなたの残高:{otherUser.balance}</p>
+            <p>あなたの残高:{user.balance}</p>
             <p>送る金額</p>
             <input />
             <button
