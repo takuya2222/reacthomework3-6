@@ -109,6 +109,7 @@ const Dashboard = () => {
         otherUser={otherUser}
         setOtherUsers={setOtherUsers}
         setBalance={setBalance}
+        balance={balance}
       />
     </>
   );
