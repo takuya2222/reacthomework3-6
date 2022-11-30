@@ -3,7 +3,14 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import "../src/App.css";
 import { auth } from "./FirebaseConfig.js";
 import db from "./FirebaseConfig";
-import { getDoc, doc, collection, getDocs } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  collection,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
 import TransferModal from "./components/TransferModal.js";
@@ -16,7 +23,8 @@ const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [otherUser, setOtherUser] = useState(null);
-  // const [currentBalance, setCurrentBalance] = useState("");
+  const [amount, setAmount] = useState("");
+  const [sendMoney, setSendMoney] = useState("");
 
   // 下のユーザー一覧を表示
   useEffect(() => {
@@ -36,6 +44,31 @@ const Dashboard = () => {
     })();
     // ここuserの意味をしっかり理解する
   }, [user]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const docRef = doc(db, "users", "9uYr9PMLEQUE2Oxjszd5UUTli622");
+  //     console.log(docRef);
+  //   })();
+  // }, []);
+
+  // firestoreデータ更新;
+  // useEffect(() => {
+  //   const newCityRef = doc(
+  //     collection(db, "users", "9uYr9PMLEQUE2Oxjszd5UUTli622")
+  //   );
+
+  // const data = {
+  //   name: "Los Angeles",
+  //   state: "CA",
+  //   country: "USA",
+  // };
+  // setDoc(newCityRef, data);
+  //   updateDoc(newCityRef, {
+  //     username: "Tokyo", // USAからTokyoに更新
+  //   });
+  //   console.log(newCityRef);
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -85,6 +118,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
+                    changeBalance();
                   }}
                 >
                   送る
@@ -95,21 +129,15 @@ const Dashboard = () => {
         </li>
       ))}
       <button onClick={logout}>ログアウト</button>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        user={user}
-        otherUser={otherUser}
-        setOtherUsers={setOtherUsers}
-      />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} otherUser={otherUser} />
       <TransferModal
         isTransferMoneyOpen={isTransferMoneyOpen}
         setIsTransferMoneyOpen={setIsTransferMoneyOpen}
-        user={user}
-        otherUser={otherUser}
-        setOtherUsers={setOtherUsers}
-        setBalance={setBalance}
         balance={balance}
+        amount={amount}
+        setAmount={setAmount}
+        sendMoney={sendMoney}
+        setSendMoney={setSendMoney}
       />
     </>
   );

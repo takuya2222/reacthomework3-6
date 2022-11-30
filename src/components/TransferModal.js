@@ -1,13 +1,14 @@
+import { useState } from "react";
+
 const TransferModal = (props) => {
   const {
     setIsTransferMoneyOpen,
-    setOtherUser,
-    otherUser,
     isTransferMoneyOpen,
-    user,
-    setBalance,
     balance,
-    docSnap,
+    amount,
+    setAmount,
+    sendMoney,
+    setSendMoney,
   } = props;
 
   const modalContent = {
@@ -28,7 +29,10 @@ const TransferModal = (props) => {
     justifyContent: "center",
   };
 
-  console.log(balance);
+  const onClickSendMoney = () => {
+    setSendMoney(amount);
+    setAmount("");
+  };
 
   return (
     <>
@@ -36,11 +40,12 @@ const TransferModal = (props) => {
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
             <p>あなたの残高:{balance}</p>
-            <p>送る金額</p>
-            <input />
+            <p>送る金額{sendMoney}</p>
+            <input value={amount} onChange={(e) => setAmount(e.target.value)} />
             <button
               onClick={() => {
-                setIsTransferMoneyOpen(false);
+                // setIsTransferMoneyOpen(false);
+                onClickSendMoney();
               }}
             >
               送信
