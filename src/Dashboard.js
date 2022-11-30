@@ -45,30 +45,21 @@ const Dashboard = () => {
     // ここuserの意味をしっかり理解する
   }, [user]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const docRef = doc(db, "users", "9uYr9PMLEQUE2Oxjszd5UUTli622");
-  //     console.log(docRef);
-  //   })();
-  // }, []);
-
   // firestoreデータ更新;
-  // useEffect(() => {
-  //   const newCityRef = doc(
-  //     collection(db, "users", "9uYr9PMLEQUE2Oxjszd5UUTli622")
-  //   );
+  useEffect(() => {
+    const newCityRef = doc(collection(db, "users"));
 
-  // const data = {
-  //   name: "Los Angeles",
-  //   state: "CA",
-  //   country: "USA",
-  // };
-  // setDoc(newCityRef, data);
-  //   updateDoc(newCityRef, {
-  //     username: "Tokyo", // USAからTokyoに更新
-  //   });
-  //   console.log(newCityRef);
-  // }, []);
+    const data = {
+      username: "Los Angeles",
+      state: "CA",
+      country: "USA",
+    };
+    setDoc(newCityRef, data);
+    updateDoc(newCityRef, {
+      username: "Tokyo", // USAからTokyoに更新
+    });
+    console.log(newCityRef);
+  }, []);
 
   const navigate = useNavigate();
 
