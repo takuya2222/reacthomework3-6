@@ -34,6 +34,8 @@ const TransferModal = (props) => {
     setAmount("");
   };
 
+  
+
   return (
     <>
       {isTransferMoneyOpen && (
@@ -44,7 +46,7 @@ const TransferModal = (props) => {
             <input value={amount} onChange={(e) => setAmount(e.target.value)} />
             <button
               onClick={() => {
-                // setIsTransferMoneyOpen(false);
+                setIsTransferMoneyOpen(false);
                 onClickSendMoney();
               }}
             >
