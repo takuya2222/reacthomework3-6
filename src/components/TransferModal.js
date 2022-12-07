@@ -34,8 +34,6 @@ const TransferModal = (props) => {
     setAmount("");
   };
 
-  
-
   return (
     <>
       {isTransferMoneyOpen && (

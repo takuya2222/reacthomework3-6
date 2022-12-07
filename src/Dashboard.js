@@ -66,23 +66,23 @@ const Dashboard = () => {
 
   // 投げ銭機能の実装
   useEffect(() => {
-    async () => {
-      console.log("aaa");
-      const docMyRef = doc(collection(db, "users", user.uid));
+    (async () => {
+      const docMyRef = doc(db, "users", user.uid);
       const docMySnap = await getDoc(docMyRef);
-      console.log(docMySnap);
       // 相手のfirestore情報更新
       const docOtherRef = doc(db, "users", "押したボタンと連動させる");
       const docOtherSnap = await getDoc(docOtherRef);
       updateDoc(
-        docRef,
+        docMySnap,
         {
-          balance: docMySnap.data().balance + { amount },
-          balance: docOtherSnap.data().balance - { amount },
+          balance: 800,
+          // balance: docMySnap.data().balance + { amount },
+          // balance: docOtherSnap.data().balance - { amount },
         },
         []
       );
-    };
+      console.log(docMySnap.data().balance);
+    })();
   }, [user]);
 
   const navigate = useNavigate();
