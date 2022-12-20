@@ -69,6 +69,7 @@ const Dashboard = () => {
     (async () => {
       const docMyRef = doc(db, "users", user.uid);
       const docMySnap = await getDoc(docMyRef);
+      console.log(docMySnap);
       // 相手のfirestore情報更新
       // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
       // const docOtherSnap = await getDoc(docOtherRef);
