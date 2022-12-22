@@ -9,6 +9,7 @@ const TransferModal = (props) => {
     setAmount,
     sendMoney,
     setSendMoney,
+    onClickSendMoney
   } = props;
 
   const modalContent = {
@@ -27,11 +28,6 @@ const TransferModal = (props) => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  };
-
-  const onClickSendMoney = () => {
-    setSendMoney(amount);
-    setAmount("");
   };
 
   return (
