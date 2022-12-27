@@ -64,31 +64,25 @@ const Dashboard = () => {
   //   console.log(newCityRef);
   // }, []);
 
-  const onClickSendMoney = () => {
-    setSendMoney(amount);
-    setAmount("");
-
-    // 投げ銭機能の実装
-    useEffect(() => {
-      (async () => {
-        const docMyRef = doc(db, "users", user.uid);
-        const docMySnap = await getDoc(docMyRef);
-        console.log(docMySnap);
-        // 相手のfirestore情報更新
-        // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
-        // const docOtherSnap = await getDoc(docOtherRef);
-        updateDoc(
-          docMyRef,
-          {
-            balance: docMySnap.data().balance - { amount },
-            // console.log(docOtherSnap.data().balance - { amount }),
-            // balance: docOtherSnap.data().balance + { amount },
-          },
-          []
-        );
-      })();
-    }, [user]);
-  };
+  // 投げ銭機能の実装
+  useEffect(() => {
+    (async () => {
+      const docMyRef = doc(db, "users", user.uid);
+      const docMySnap = await getDoc(docMyRef);
+      console.log(docMySnap.data().balance);
+      // 相手のfirestore情報更新
+      // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
+      // const docOtherSnap = await getDoc(docOtherRef);
+      updateDoc(
+        docMyRef,
+        {
+          balance: docMySnap.data().balance - sendMoney,
+        },
+        []
+      );
+    })();
+    console.log(sendMoney);
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -138,7 +132,6 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
-                    changeBalance();
                   }}
                 >
                   送る
@@ -158,7 +151,6 @@ const Dashboard = () => {
         setAmount={setAmount}
         sendMoney={sendMoney}
         setSendMoney={setSendMoney}
-        onClickSendMoney={onClickSendMoney}
       />
     </>
   );

@@ -9,7 +9,6 @@ const TransferModal = (props) => {
     setAmount,
     sendMoney,
     setSendMoney,
-    onClickSendMoney
   } = props;
 
   const modalContent = {
@@ -41,7 +40,7 @@ const TransferModal = (props) => {
             <button
               onClick={() => {
                 setIsTransferMoneyOpen(false);
-                onClickSendMoney();
+                setSendMoney(amount);
               }}
             >
               送信
