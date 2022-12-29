@@ -80,8 +80,8 @@ const Dashboard = () => {
         },
         []
       );
+      console.log(sendMoney);
     })();
-    console.log(sendMoney);
   }, [user]);
 
   const navigate = useNavigate();

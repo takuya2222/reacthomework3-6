@@ -41,6 +41,7 @@ const TransferModal = (props) => {
               onClick={() => {
                 setIsTransferMoneyOpen(false);
                 setSendMoney(amount);
+                setAmount("");
               }}
             >
               送信
