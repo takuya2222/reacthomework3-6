@@ -26,6 +26,18 @@ const Dashboard = () => {
   const [amount, setAmount] = useState("");
   const [sendMoney, setSendMoney] = useState("");
 
+  /* ↓state変数「user」を上で定義 */
+  /* ↓ログインしているかどうかを判定する */
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        navigate("/login");
+      } else {
+        setUser(currentUser);
+      }
+    });
+  }, [user]);
+
   // 下のユーザー一覧を表示
   useEffect(() => {
     const others = collection(db, "users");
@@ -38,10 +50,12 @@ const Dashboard = () => {
   // 上の名前と残高を表記
   useEffect(() => {
     (async () => {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      setUserName(docSnap.data().username);
-      setBalance(docSnap.data().balance);
+      if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        setUserName(docSnap.data().username);
+        setBalance(docSnap.data().balance);
+      }
     })();
     // ここuserの意味をしっかり理解する
   }, [user]);
@@ -64,22 +78,22 @@ const Dashboard = () => {
   //   console.log(newCityRef);
   // }, []);
 
-  // 投げ銭機能の実装
   useEffect(() => {
     (async () => {
-      const docMyRef = doc(db, "users", user.uid);
-      const docMySnap = await getDoc(docMyRef);
-      console.log(docMySnap.data().balance);
-      // 相手のfirestore情報更新
-      // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
-      // const docOtherSnap = await getDoc(docOtherRef);
-      updateDoc(
-        docMyRef,
-        {
-          balance: docMySnap.data().balance - sendMoney,
-        },
-        []
-      );
+      if (user) {
+        const docMyRef = doc(db, "users", user.uid);
+        const docMySnap = await getDoc(docMyRef);
+        // 相手のfirestore情報更新
+        // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
+        // const docOtherSnap = await getDoc(docOtherRef);
+        updateDoc(
+          docMyRef,
+          {
+            balance: docMySnap.data().balance - sendMoney,
+          },
+          []
+        );
+      }
       console.log(sendMoney);
     })();
   }, [user]);
@@ -90,18 +104,6 @@ const Dashboard = () => {
     await signOut(auth);
     navigate("/login");
   };
-
-  /* ↓state変数「user」を上で定義 */
-  /* ↓ログインしているかどうかを判定する */
-  useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        navigate("/login");
-      } else {
-        setUser(currentUser);
-      }
-    });
-  }, [user]);
 
   return (
     <>
