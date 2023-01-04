@@ -3,9 +3,17 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import "../src/App.css";
 import { auth } from "./FirebaseConfig.js";
 import db from "./FirebaseConfig";
-import { getDoc, doc, collection, getDocs } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  collection,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Modal from "./components/WalletModal.js";
+import TransferModal from "./components/TransferModal.js";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
@@ -13,33 +21,10 @@ const Dashboard = () => {
   const [user, setUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [otherUser, setOtherUser] = useState(null);
-
-  // 下のユーザー一覧を表示
-  useEffect(() => {
-    const others = collection(db, "users");
-    getDocs(others).then((QuerySnapshot) => {
-      setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
-    });
-  }, []);
-
-  // 上の名前と残高を表記
-  useEffect(() => {
-    (async () => {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      setUserName(docSnap.data().username);
-      setBalance(docSnap.data().balance);
-    })();
-    // ここuserの意味をしっかり理解する
-  }, [user]);
-
-  const navigate = useNavigate();
-
-  const logout = async () => {
-    await signOut(auth);
-    navigate("/login");
-  };
+  const [amount, setAmount] = useState("");
+  const [sendMoney, setSendMoney] = useState("");
 
   /* ↓state変数「user」を上で定義 */
   /* ↓ログインしているかどうかを判定する */
@@ -52,6 +37,73 @@ const Dashboard = () => {
       }
     });
   }, [user]);
+
+  // 下のユーザー一覧を表示
+  useEffect(() => {
+    const others = collection(db, "users");
+    // const others = doc(db, "users");
+    getDocs(others).then((QuerySnapshot) => {
+      setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
+
+  // 上の名前と残高を表記
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        setUserName(docSnap.data().username);
+        setBalance(docSnap.data().balance);
+      }
+    })();
+    // ここuserの意味をしっかり理解する
+  }, [user]);
+
+  // firestoreデータ更新;
+  // useEffect(() => {
+  //   // 自動生成ドキュメントIDを持つドキュメントへの参照を取得
+  //   const newCityRef = doc(collection(db, "cities"));
+  //   console.log(newCityRef);
+
+  //   const data = {
+  //     username: "Los Angeles",
+  //     state: "CA",
+  //     country: "USA",
+  //   };
+  //   setDoc(newCityRef, data);
+  //   updateDoc(newCityRef, {
+  //     username: "Tokyo", // USAからTokyoに更新
+  //   });
+  //   console.log(newCityRef);
+  // }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const docMyRef = doc(db, "users", user.uid);
+        const docMySnap = await getDoc(docMyRef);
+        // 相手のfirestore情報更新
+        // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
+        // const docOtherSnap = await getDoc(docOtherRef);
+        updateDoc(
+          docMyRef,
+          {
+            balance: docMySnap.data().balance - sendMoney,
+          },
+          []
+        );
+      }
+      console.log(sendMoney);
+    })();
+  }, [user]);
+
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
 
   return (
     <>
@@ -70,6 +122,8 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsOpen(true);
+                    // OtherUsersに格納されたデータにおいてマップ関数の中の仮引数userには0から順番に全ての値が入る.
+                    // setOtherUsersで
                     setOtherUser(user);
                   }}
                 >
@@ -77,19 +131,28 @@ const Dashboard = () => {
                 </button>
               </div>
               <div className="moneyWallet">
-                <button>送る</button>
+                <button
+                  onClick={() => {
+                    setIsTransferMoneyOpen(true);
+                  }}
+                >
+                  送る
+                </button>
               </div>
             </div>
           </div>
         </li>
       ))}
       <button onClick={logout}>ログアウト</button>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        user={user}
-        otherUser={otherUser}
-        setOtherUsers={setOtherUsers}
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} otherUser={otherUser} />
+      <TransferModal
+        isTransferMoneyOpen={isTransferMoneyOpen}
+        setIsTransferMoneyOpen={setIsTransferMoneyOpen}
+        balance={balance}
+        amount={amount}
+        setAmount={setAmount}
+        sendMoney={sendMoney}
+        setSendMoney={setSendMoney}
       />
     </>
   );
