@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const TransferModal = (props) => {
   const {
     setIsTransferMoneyOpen,
@@ -38,7 +36,7 @@ const TransferModal = (props) => {
             <p>送る金額{sendMoney}</p>
             <input value={amount} onChange={(e) => setAmount(e.target.value)} />
             <button
-              onClick={() => {
+              onClick={(e) => {
                 setIsTransferMoneyOpen(false);
                 setSendMoney(amount);
                 setAmount("");
