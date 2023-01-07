@@ -41,7 +41,6 @@ const Dashboard = () => {
   // 下のユーザー一覧を表示
   useEffect(() => {
     const others = collection(db, "users");
-    // const others = doc(db, "users");
     getDocs(others).then((QuerySnapshot) => {
       setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
     });
@@ -60,43 +59,28 @@ const Dashboard = () => {
     // ここuserの意味をしっかり理解する
   }, [user]);
 
-  // firestoreデータ更新;
-  // useEffect(() => {
-  //   // 自動生成ドキュメントIDを持つドキュメントへの参照を取得
-  //   const newCityRef = doc(collection(db, "cities"));
-  //   console.log(newCityRef);
-
-  //   const data = {
-  //     username: "Los Angeles",
-  //     state: "CA",
-  //     country: "USA",
-  //   };
-  //   setDoc(newCityRef, data);
-  //   updateDoc(newCityRef, {
-  //     username: "Tokyo", // USAからTokyoに更新
-  //   });
-  //   console.log(newCityRef);
-  // }, []);
-
   useEffect(() => {
     (async () => {
       if (user) {
         const docMyRef = doc(db, "users", user.uid);
         const docMySnap = await getDoc(docMyRef);
-        // 相手のfirestore情報更新
-        // const docOtherRef = doc(db, "users", "押したボタンと連動させる");
-        // const docOtherSnap = await getDoc(docOtherRef);
+        console.log(user.uid);
+        // 相手のfirestore情報更新;
+        const docOtherRef = doc(db, "users", user.uid);
+        const docOtherSnap = await getDoc(docOtherRef);
+        console.log(docOtherSnap);
         updateDoc(
           docMyRef,
           {
             balance: docMySnap.data().balance - sendMoney,
+            // balance: docOtherSnap.data().balance + sendMoney,
           },
           []
         );
       }
       console.log(sendMoney);
     })();
-  }, [user]);
+  }, [user, sendMoney]);
 
   const navigate = useNavigate();
 
@@ -134,6 +118,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
+                    console.log();
                   }}
                 >
                   送る
