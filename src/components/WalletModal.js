@@ -1,4 +1,4 @@
-const Modal = (props) => {
+const WalletModal = (props) => {
   const { setIsOpen, otherUser, isOpen } = props;
 
   const closeModal = () => {
@@ -38,4 +38,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default WalletModal;

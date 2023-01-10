@@ -12,7 +12,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import Modal from "./components/WalletModal.js";
+import WalletModal from "./components/WalletModal.js";
 import TransferModal from "./components/TransferModal.js";
 
 const Dashboard = () => {
@@ -22,7 +22,7 @@ const Dashboard = () => {
   const [otherUsers, setOtherUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
-  const [otherUser, setOtherUser] = useState(null);
+  const [otherUser, setOtherUser] = useState("");
   const [amount, setAmount] = useState("");
   const [sendMoney, setSendMoney] = useState("");
 
@@ -65,10 +65,7 @@ const Dashboard = () => {
         const docMyRef = doc(db, "users", user.uid);
         const docMySnap = await getDoc(docMyRef);
         console.log(user.uid);
-        // 相手のfirestore情報更新;
-        const docOtherRef = doc(db, "users", user.uid);
-        const docOtherSnap = await getDoc(docOtherRef);
-        console.log(docOtherSnap);
+
         updateDoc(
           docMyRef,
           {
@@ -78,9 +75,24 @@ const Dashboard = () => {
           []
         );
       }
-      console.log(sendMoney);
     })();
   }, [user, sendMoney]);
+
+  useEffect(() => {
+    (async () => {
+      if (otherUser) {
+        const docUserRef = doc(db, "users", otherUser.uid);
+        const docUserSnap = await getDoc(docUserRef);
+        updateDoc(
+          docUserRef,
+          {
+            balance: docUserSnap.data().balance + sendMoney,
+          },
+          []
+        );
+      }
+    })();
+  }, [sendMoney, otherUser]);
 
   const navigate = useNavigate();
 
@@ -106,8 +118,6 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsOpen(true);
-                    // OtherUsersに格納されたデータにおいてマップ関数の中の仮引数userには0から順番に全ての値が入る.
-                    // setOtherUsersで
                     setOtherUser(user);
                   }}
                 >
@@ -118,7 +128,8 @@ const Dashboard = () => {
                 <button
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
-                    console.log();
+                    setOtherUser(user);
+                    console.log(user);
                   }}
                 >
                   送る
@@ -129,7 +140,11 @@ const Dashboard = () => {
         </li>
       ))}
       <button onClick={logout}>ログアウト</button>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} otherUser={otherUser} />
+      <WalletModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        otherUser={otherUser}
+      />
       <TransferModal
         isTransferMoneyOpen={isTransferMoneyOpen}
         setIsTransferMoneyOpen={setIsTransferMoneyOpen}
