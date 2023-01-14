@@ -18,11 +18,11 @@ import TransferModal from "./components/TransferModal.js";
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
   const [balance, setBalance] = useState("");
-  const [user, setUser] = useState("");
+  const [authUser, setAuthUser] = useState("");
+  const [otherUser, setOtherUser] = useState("");
   const [otherUsers, setOtherUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
-  const [otherUser, setOtherUser] = useState("");
   const [amount, setAmount] = useState("");
   const [sendMoney, setSendMoney] = useState("");
 
@@ -33,10 +33,10 @@ const Dashboard = () => {
       if (!currentUser) {
         navigate("/login");
       } else {
-        setUser(currentUser);
+        setAuthUser(currentUser);
       }
     });
-  }, [user]);
+  }, [authUser]);
 
   // 下のユーザー一覧を表示
   useEffect(() => {
@@ -49,39 +49,38 @@ const Dashboard = () => {
   // 上の名前と残高を表記
   useEffect(() => {
     (async () => {
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
+      if (authUser) {
+        const docRef = doc(db, "users", authUser.uid);
+
         const docSnap = await getDoc(docRef);
         setUserName(docSnap.data().username);
         setBalance(docSnap.data().balance);
       }
     })();
     // ここuserの意味をしっかり理解する
-  }, [user]);
+  }, [authUser]);
 
   useEffect(() => {
     (async () => {
-      if (user) {
-        const docMyRef = doc(db, "users", user.uid);
+      if (authUser) {
+        const docMyRef = doc(db, "users", authUser.uid);
         const docMySnap = await getDoc(docMyRef);
-        console.log(user.uid);
-
         updateDoc(
           docMyRef,
           {
             balance: docMySnap.data().balance - sendMoney,
-            // balance: docOtherSnap.data().balance + sendMoney,
           },
           []
         );
       }
     })();
-  }, [user, sendMoney]);
+  }, [authUser, sendMoney]);
 
   useEffect(() => {
     (async () => {
       if (otherUser) {
-        const docUserRef = doc(db, "users", otherUser.uid);
+        const docUserRef = doc(db, "users", "uid");
+        console.log(otherUser);
         const docUserSnap = await getDoc(docUserRef);
         updateDoc(
           docUserRef,
@@ -106,7 +105,7 @@ const Dashboard = () => {
       {/* ↓ユーザーのメールアドレスを表示（ログインしている場合） */}
       {userName}さんようこそ！ 残高:{balance}
       <h1>マイページ</h1>
-      <p>{user && user.email}</p>
+      <p>{authUser && authUser.email}</p>
       <h1>ユーザ一覧</h1>
       <p>ユーザ名</p>
       {otherUsers.map((user) => (
