@@ -10,6 +10,7 @@ import {
   getDocs,
   setDoc,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import WalletModal from "./components/WalletModal.js";
@@ -43,6 +44,7 @@ const Dashboard = () => {
     const others = collection(db, "users");
     getDocs(others).then((QuerySnapshot) => {
       setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
+      console.log(QuerySnapshot.docs);
     });
   }, []);
 
@@ -51,7 +53,6 @@ const Dashboard = () => {
     (async () => {
       if (authUser) {
         const docRef = doc(db, "users", authUser.uid);
-
         const docSnap = await getDoc(docRef);
         setUserName(docSnap.data().username);
         setBalance(docSnap.data().balance);
@@ -79,8 +80,8 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       if (otherUser) {
-        const docUserRef = doc(db, "users", "uid");
-        console.log(otherUser);
+        console.log(otherUser.balance);
+        const docUserRef = doc(db, "users", otherUser.uid);
         const docUserSnap = await getDoc(docUserRef);
         updateDoc(
           docUserRef,
@@ -90,8 +91,9 @@ const Dashboard = () => {
           []
         );
       }
+      console.log(otherUser.balance);
     })();
-  }, [sendMoney, otherUser]);
+  }, [sendMoney]);
 
   const navigate = useNavigate();
 
