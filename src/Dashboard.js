@@ -43,8 +43,10 @@ const Dashboard = () => {
   useEffect(() => {
     const others = collection(db, "users");
     getDocs(others).then((QuerySnapshot) => {
-      setOtherUsers(QuerySnapshot.docs.map((doc) => {documentId: doc.id, ...doc.data()}));
-      console.log(QuerySnapshot.docs.map((doc) => doc.data()));
+      setOtherUsers(
+        QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }))
+      );
+      console.log(QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() })));
     });
   }, []);
 
@@ -80,7 +82,6 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       if (otherUser) {
-        console.log(otherUser.balance);
         const docUserRef = doc(db, "users", otherUser.documentId);
         const docUserSnap = await getDoc(docUserRef);
         updateDoc(
@@ -91,7 +92,7 @@ const Dashboard = () => {
           []
         );
       }
-      console.log(otherUser.balance);
+      console.log(otherUser.documentId);
     })();
   }, [sendMoney]);
 
@@ -130,7 +131,6 @@ const Dashboard = () => {
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
                     setOtherUser(user);
-                    console.log(user);
                   }}
                 >
                   送る

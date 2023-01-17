@@ -33,7 +33,11 @@ const TransferModal = (props) => {
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
             <p>あなたの残高:{balance}</p>
-            <input value={amount} onChange={(e) => setAmount(e.target.value)} />
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
             <button
               onClick={(e) => {
                 setIsTransferMoneyOpen(false);
