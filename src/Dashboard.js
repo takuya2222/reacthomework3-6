@@ -43,8 +43,8 @@ const Dashboard = () => {
   useEffect(() => {
     const others = collection(db, "users");
     getDocs(others).then((QuerySnapshot) => {
-      setOtherUsers(QuerySnapshot.docs.map((doc) => doc.data()));
-      console.log(QuerySnapshot.docs);
+      setOtherUsers(QuerySnapshot.docs.map((doc) => {documentId: doc.id, ...doc.data()}));
+      console.log(QuerySnapshot.docs.map((doc) => doc.data()));
     });
   }, []);
 
@@ -81,7 +81,7 @@ const Dashboard = () => {
     (async () => {
       if (otherUser) {
         console.log(otherUser.balance);
-        const docUserRef = doc(db, "users", otherUser.uid);
+        const docUserRef = doc(db, "users", otherUser.documentId);
         const docUserSnap = await getDoc(docUserRef);
         updateDoc(
           docUserRef,
