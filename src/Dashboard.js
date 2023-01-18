@@ -46,7 +46,9 @@ const Dashboard = () => {
       setOtherUsers(
         QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }))
       );
-      console.log(QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() })));
+      console.log(
+        QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }))
+      );
     });
   }, []);
 
@@ -77,24 +79,29 @@ const Dashboard = () => {
         );
       }
     })();
-  }, [authUser, sendMoney]);
+  }, [sendMoney, authUser]);
 
   useEffect(() => {
     (async () => {
       if (otherUser) {
         const docUserRef = doc(db, "users", otherUser.documentId);
         const docUserSnap = await getDoc(docUserRef);
+        console.log(sendMoney);
+        console.log(docUserSnap.data().balance.Number);
+        console.log(docUserSnap.data().balance + sendMoney);
+        console.log(Number(docUserSnap.data().balance));
+        console.log("aaa");
         updateDoc(
           docUserRef,
           {
-            balance: docUserSnap.data().balance + sendMoney,
+            balance: Number(docUserSnap.data().balance) + Number(sendMoney),
           },
           []
         );
       }
       console.log(otherUser.documentId);
     })();
-  }, [sendMoney]);
+  }, [sendMoney, otherUser]);
 
   const navigate = useNavigate();
 
@@ -131,6 +138,7 @@ const Dashboard = () => {
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
                     setOtherUser(user);
+                    console.log(user);
                   }}
                 >
                   送る
