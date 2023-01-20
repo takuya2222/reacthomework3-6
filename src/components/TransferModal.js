@@ -43,7 +43,6 @@ const TransferModal = (props) => {
                 setIsTransferMoneyOpen(false);
                 setSendMoney(amount);
                 setAmount("");
-                console.log("aaa");
               }}
             >
               送信

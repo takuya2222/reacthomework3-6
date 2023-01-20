@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [sendMoney, setSendMoney] = useState("");
+  console.log(sendMoney);
 
   /* ↓state変数「user」を上で定義 */
   /* ↓ログインしているかどうかを判定する */
@@ -62,8 +63,9 @@ const Dashboard = () => {
         setBalance(docSnap.data().balance);
       }
     })();
-    // ここuserの意味をしっかり理解する
   }, [authUser]);
+
+  setBalance;
 
   useEffect(() => {
     (async () => {
@@ -78,18 +80,16 @@ const Dashboard = () => {
           []
         );
       }
+      console.log(docMySnap.data().balance - sendMoney);
     })();
-  }, [sendMoney, authUser]);
+  }, [sendMoney]);
 
   useEffect(() => {
     (async () => {
       if (otherUser) {
         const docUserRef = doc(db, "users", otherUser.documentId);
         const docUserSnap = await getDoc(docUserRef);
-        console.log(sendMoney);
-        console.log(docUserSnap.data().balance.Number);
-        console.log(docUserSnap.data().balance + sendMoney);
-        console.log(Number(docUserSnap.data().balance));
+        console.log(docUserSnap);
         console.log("aaa");
         updateDoc(
           docUserRef,
@@ -99,9 +99,9 @@ const Dashboard = () => {
           []
         );
       }
-      console.log(otherUser.documentId);
+      docUserRef;
     })();
-  }, [sendMoney, otherUser]);
+  }, [sendMoney]);
 
   const navigate = useNavigate();
 
