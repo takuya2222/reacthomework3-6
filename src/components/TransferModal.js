@@ -33,17 +33,6 @@ const TransferModal = (props) => {
     justifyContent: "center",
   };
 
-  const [renewedBalance,setRenewedBalance] = useState("")
-
-  useEffect(() => {
-    (async () => {
-      if (authUser) {
-        const docRef = doc(db, "users", authUser.uid);
-        const docSnap = await getDoc(docRef);
-      }
-    })();
-  }, [authUser]);
-
   return (
     <>
       {isTransferMoneyOpen && (
@@ -60,7 +49,6 @@ const TransferModal = (props) => {
                 setIsTransferMoneyOpen(false);
                 setSendMoney(amount);
                 setAmount("");
-                setBalance(docSnap.data().balance);
               }}
             >
               送信

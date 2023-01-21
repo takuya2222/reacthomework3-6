@@ -66,13 +66,15 @@ const Dashboard = () => {
       if (authUser) {
         const docMyRef = doc(db, "users", authUser.uid);
         const docMySnap = await getDoc(docMyRef);
+        const balance = docMySnap.data().balance - sendMoney;
         updateDoc(
           docMyRef,
           {
-            balance: docMySnap.data().balance - sendMoney,
+            balance: balance,
           },
           []
         );
+        setBalance(balance);
       }
     })();
   }, [sendMoney]);
