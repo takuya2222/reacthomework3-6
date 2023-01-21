@@ -1,3 +1,7 @@
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import db from "../FirebaseConfig";
+
 const TransferModal = (props) => {
   const {
     setIsTransferMoneyOpen,
@@ -6,7 +10,9 @@ const TransferModal = (props) => {
     amount,
     setAmount,
     sendMoney,
+    setBalance,
     setSendMoney,
+    authUser,
   } = props;
 
   const modalContent = {
@@ -27,6 +33,17 @@ const TransferModal = (props) => {
     justifyContent: "center",
   };
 
+  const [renewedBalance,setRenewedBalance] = useState("")
+
+  useEffect(() => {
+    (async () => {
+      if (authUser) {
+        const docRef = doc(db, "users", authUser.uid);
+        const docSnap = await getDoc(docRef);
+      }
+    })();
+  }, [authUser]);
+
   return (
     <>
       {isTransferMoneyOpen && (
@@ -43,6 +60,7 @@ const TransferModal = (props) => {
                 setIsTransferMoneyOpen(false);
                 setSendMoney(amount);
                 setAmount("");
+                setBalance(docSnap.data().balance);
               }}
             >
               送信

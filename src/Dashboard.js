@@ -26,7 +26,6 @@ const Dashboard = () => {
   const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [sendMoney, setSendMoney] = useState("");
-  console.log(sendMoney);
 
   /* ↓state変数「user」を上で定義 */
   /* ↓ログインしているかどうかを判定する */
@@ -47,9 +46,6 @@ const Dashboard = () => {
       setOtherUsers(
         QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }))
       );
-      console.log(
-        QuerySnapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }))
-      );
     });
   }, []);
 
@@ -65,8 +61,6 @@ const Dashboard = () => {
     })();
   }, [authUser]);
 
-  setBalance;
-
   useEffect(() => {
     (async () => {
       if (authUser) {
@@ -80,7 +74,6 @@ const Dashboard = () => {
           []
         );
       }
-      console.log(docMySnap.data().balance - sendMoney);
     })();
   }, [sendMoney]);
 
@@ -89,8 +82,6 @@ const Dashboard = () => {
       if (otherUser) {
         const docUserRef = doc(db, "users", otherUser.documentId);
         const docUserSnap = await getDoc(docUserRef);
-        console.log(docUserSnap);
-        console.log("aaa");
         updateDoc(
           docUserRef,
           {
@@ -99,7 +90,6 @@ const Dashboard = () => {
           []
         );
       }
-      docUserRef;
     })();
   }, [sendMoney]);
 
@@ -138,7 +128,6 @@ const Dashboard = () => {
                   onClick={() => {
                     setIsTransferMoneyOpen(true);
                     setOtherUser(user);
-                    console.log(user);
                   }}
                 >
                   送る
@@ -162,6 +151,8 @@ const Dashboard = () => {
         setAmount={setAmount}
         sendMoney={sendMoney}
         setSendMoney={setSendMoney}
+        setBalance={setBalance}
+        authUser={authUser}
       />
     </>
   );
