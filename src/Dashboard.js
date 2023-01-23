@@ -74,6 +74,7 @@ const Dashboard = () => {
           },
           []
         );
+        // ここのsetBalanceの意味をよく理解する
         setBalance(balance);
       }
     })();
