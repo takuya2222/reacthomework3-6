@@ -1,11 +1,19 @@
-const Modal = (props) => {
-  const { setCanShowModal, setOtherUser, otherUser, canShowModal, user } =
-    props;
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import db from "../FirebaseConfig";
 
-  const closeModal = () => {
-    setCanShowModal(false);
-    setOtherUser(user);
-  };
+const TransferModal = (props) => {
+  const {
+    setIsTransferMoneyOpen,
+    isTransferMoneyOpen,
+    balance,
+    amount,
+    setAmount,
+    sendMoney,
+    setBalance,
+    setSendMoney,
+    authUser,
+  } = props;
 
   const modalContent = {
     background: "white",
@@ -27,12 +35,24 @@ const Modal = (props) => {
 
   return (
     <>
-      {canShowModal && (
+      {isTransferMoneyOpen && (
         <div id="overlay" style={overlay}>
           <div id="modalContent" style={modalContent}>
-            <p>{otherUser.username}さんの残高:</p>
-            <p>{otherUser.balance}</p>
-            <button onClick={closeModal}>Close</button>
+            <p>あなたの残高:{balance}</p>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <button
+              onClick={(e) => {
+                setIsTransferMoneyOpen(false);
+                setSendMoney(amount);
+                setAmount("");
+              }}
+            >
+              送信
+            </button>
           </div>
         </div>
       )}
@@ -40,4 +60,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default TransferModal;
